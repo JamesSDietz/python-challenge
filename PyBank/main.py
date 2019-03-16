@@ -2,6 +2,9 @@ import os
 import csv
 import operator
 
+# James Dietz
+# HW 3
+
 #I did this homework, for both PyBank and PyPoll, in Jupyter Notebook and in python 
 # via VS code and terminal--in some cases, iterating between them.  Below i open the 
 #data file created in JN that contains the incremental monthly change in profit.
