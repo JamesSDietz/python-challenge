@@ -1,65 +1,55 @@
+# James Dietz
+# HW 3
+# Data Analytics and Visulation, 3
+
 import os
 import csv
-import pandas as pd
-import numpy as np
-
-#I did this homework, for both PyBank and PyPoll, in Jupyter Notebook and in python 
-# via VS code and terminal--in some cases, iterating between them.  Below i open the 
-#data file created in JN that contains dummy variables for each of the candidates.
-#it is four columns of data--dichotomous--one for each candidate.
 
 
-with open('col_output.csv') as csvfile:
+
+with open('election_data.csv') as csvfile:
     csvreader = csv.reader(csvfile, delimiter=",")
     next(csvreader)
-   
-   #this allowed me to look at the data in terminal to ensure it was correct.
-    #for i,row in enumerate(csvreader):
-     #   print(row[0], row[1], row[2], row[3])
-    #    if(i >= 9):
-     #       break
-
-#   initializing some summation variables
-
-    sumcorrey = 0
-    sumkahn = 0
-    sumli = 0
-    sumotooley = 0
-    totalvotes = 0
-
-#   summing votes and storing them.
-
+    
+    correy = 0
+    khan = 0
+    li = 0
+    otooley = 0
+    
+    
+# counting votes. I would have liked to have come up with a way to not have
+# to hard code candidates names but I couldnt figure out how to determine
+#unique values of candidate column and use that to count
     for row in csvreader:
-        correy = int(row[0])
-        kahn = int(row[1])
-        li = int(row[2])
-        otooley = int(row[3])
-        sumcorrey += correy
-        sumkahn += kahn
-        sumli += li
-        sumotooley += otooley
+     
+        vote = row[2]
+        if vote == "Correy":
+            correy = correy + 1
+        elif vote == "Khan":
+            khan = khan + 1
+        elif vote == "Li":
+            li = li + 1
+        elif vote == "O'Tooley":
+            otooley = otooley + 1
 
-#   calculating total votes cast which is verified in JN and computing percents.
+# percentage and total votes calcs
+    totalvotes = correy + khan + li + otooley
+    pctcorrey = correy / totalvotes * 100
+    pctkhan = khan / totalvotes * 100 
+    pctli = li / totalvotes * 100 
+    pctotooley = otooley / totalvotes * 100
 
-    totalvotes = sumcorrey + sumkahn + sumli + sumotooley
-    pctcorrey = sumcorrey / totalvotes * 100
-    pctkahn = sumkahn / totalvotes * 100 
-    pctli = sumli / totalvotes * 100 
-    pctotooley = sumotooley / totalvotes * 100
+#below was done to verify
+#print(str(correy))
+#print(str(khan))
+#print(str(li))
+#print(str(otooley))
 
 #   obvious what the outcome is but I created a dictionary to identify max votes which allowed
 #   winner determination to be result of code rather than hard coded as string .
+outcome = {"Correy":correy, "Kahn":khan, "Li":li, "O'Tooley":otooley}
+winner = max(outcome, key=outcome.get)
 
-    outcome = {"Correy":sumcorrey, "Kahn":sumkahn, "Li":sumli, "O'Tooley":sumotooley}
-    winner = max(outcome, key=outcome.get)
-    
-
-#again below was done to verify
-    #print(sumcorrey)
-    #print(sumkahn)
-    #print(sumli)
-    #print(sumotooley)
-    #print(totalvotes)
 
 # reporting code
    
@@ -72,10 +62,10 @@ print(" ")
 print("Total Votes: " + str(totalvotes))
 print(" ")
 print("________________________________")
-print("Kahn: " + str(round(pctkahn)) + "% (" + str(sumkahn) + ")")
-print("Correy: " + str(round(pctcorrey)) + "% (" + str(sumcorrey) + ")")
-print("Li: " + str(round(pctli)) + "% (" + str(sumli) + ")")
-print("O'Tooley: " + str(round(pctotooley)) + "% (" + str(sumotooley) + ")")
+print("Khan: " + str(round(pctkhan)) + "% (" + str(khan) + ")")
+print("Correy: " + str(round(pctcorrey)) + "% (" + str(correy) + ")")
+print("Li: " + str(round(pctli)) + "% (" + str(li) + ")")
+print("O'Tooley: " + str(round(pctotooley)) + "% (" + str(otooley) + ")")
 print("________________________________")
 print("Winner: " + str(winner) + " with " + str(outcome[winner]) + " votes.")
 print("_________________________________")
@@ -88,11 +78,13 @@ outfile.write("Election Results\r\n")
 outfile.write("-------------------------------\r\n")
 outfile.write("Total Votes: " + str(totalvotes) + " \r\n")
 outfile.write("-------------------------------\r\n")   
-outfile.write("Kahn: " + str(round(pctkahn)) + "% (" + str(sumkahn) + ")" + " \r\n")
-outfile.write("Correy: " + str(round(pctcorrey)) + "% (" + str(sumcorrey) + ")" + " \r\n")
-outfile.write("Li: " + str(round(pctli)) + "% (" + str(sumli) + ")" + " \r\n")
-outfile.write("O'Tooley: " + str(round(pctotooley)) + "% (" + str(sumotooley) + ")" + " \r\n")
+outfile.write("Khan: " + str(round(pctkhan)) + "% (" + str(khan) + ")" + " \r\n")
+outfile.write("Correy: " + str(round(pctcorrey)) + "% (" + str(correy) + ")" + " \r\n")
+outfile.write("Li: " + str(round(pctli)) + "% (" + str(li) + ")" + " \r\n")
+outfile.write("O'Tooley: " + str(round(pctotooley)) + "% (" + str(otooley) + ")" + " \r\n")
 outfile.write("________________________________\r\n")
 outfile.write("Winner: " + str(winner) + " with " + str(outcome[winner]) + " votes." + " \r\n")
 outfile.write("_________________________________")
 outfile.close()
+
+        
